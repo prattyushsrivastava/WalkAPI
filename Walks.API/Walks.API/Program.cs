@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Walks.API.Data;
+using Walks.API.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,7 +10,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<WalkDbContext>(options =>
+{ 
+ options.UseSqlServer(builder.Configuration.GetConnectionString("WalksCon"));
+});
 
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
