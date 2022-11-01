@@ -29,5 +29,20 @@ namespace Walks.API.Repositories
         {
            return await walkDb.Regions.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<Region> DeleteAsync(Guid id)
+        {
+            var region = await walkDb.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            if(region == null)
+            {
+                return null;
+            }
+            walkDb.Regions.Remove(region);
+            await walkDb.SaveChangesAsync();
+            return region;
+
+        
+        
+        }
     }
 }

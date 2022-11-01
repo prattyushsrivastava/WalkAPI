@@ -98,5 +98,38 @@ namespace Walks.API.Controllers
             return CreatedAtAction(nameof(GetRegionAsync), new {id=regionDTO.Id},regionDTO);
 
         }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteRegionAsync(Guid id)
+        {
+            //Get Region from database
+
+            var region = await regionRepository.DeleteAsync(id);
+
+
+            //if null invalid
+
+            if(region == null)
+            {
+                return NotFound();
+            }
+            //convert response back to DTO
+            var regionDTO = new Models.DTO.Region
+            {
+                Id = region.Id,
+                Name = region.Name, 
+                Code = region.Code,
+                Area = region.Area,
+                Lat = region.Lat,
+                Long = region.Long,
+                Population = region.Population
+            };
+
+
+
+            //Return OK response
+            return Ok(regionDTO);
+        }
     }
 }
