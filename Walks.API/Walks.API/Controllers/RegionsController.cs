@@ -107,7 +107,6 @@ namespace Walks.API.Controllers
 
             var region = await regionRepository.DeleteAsync(id);
 
-
             //if null invalid
 
             if(region == null)
@@ -125,11 +124,47 @@ namespace Walks.API.Controllers
                 Long = region.Long,
                 Population = region.Population
             };
-
-
-
             //Return OK response
             return Ok(regionDTO);
+        }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> UpdateRegionAsync([FromRoute]Guid id, [FromBody]Models.DTO.UpdateRegionRequest updateregreq)
+        {
+            //Convert DTO to domain model
+
+            var region = new Models.Domain.Region()
+            {
+                Name = updateregreq.Name,
+                Code = updateregreq.Code,
+                Area = updateregreq.Area,
+                Lat = updateregreq.Lat,
+                Long = updateregreq.Long,
+                Population = updateregreq.Population
+            };
+
+            //Update region using repo
+            region = await regionRepository.UpdateAsync(id, region);
+            // if null not found
+            if (region == null)
+                return NotFound();
+            //convert domain to DTO
+            var regionDTO = new Models.DTO.Region
+            {
+                Id = region.Id,
+                Name = region.Name,
+                Code = region.Code,
+                Area = region.Area,
+                Lat = region.Lat,
+                Long = region.Long,
+                Population = region.Population
+            };
+            //Return OK response
+            return Ok(regionDTO);
+
+
+
         }
     }
 }

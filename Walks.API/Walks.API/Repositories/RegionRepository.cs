@@ -44,5 +44,23 @@ namespace Walks.API.Repositories
         
         
         }
+
+        public async Task<Region> UpdateAsync(Guid id, Region region)
+        {
+            var exregion = await walkDb.Regions.FirstOrDefaultAsync(x=>x.Id==id);
+            if (exregion == null)
+                return null;
+
+            exregion.Code=region.Code;
+            exregion.Name=region.Name;
+            exregion.Area=region.Area;
+            exregion.Lat=region.Lat;
+            exregion.Long=region.Long;
+            exregion.Population=region.Population;
+
+
+            await walkDb.SaveChangesAsync();
+            return  exregion;
+        }
     }
 }
