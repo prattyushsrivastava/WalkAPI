@@ -9,4 +9,5 @@ namespace Walks.API.Profiles
             CreateMap<Models.Domain.Region, Models.DTO.Region>();
         }
     }
+
 }
